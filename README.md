@@ -4,7 +4,8 @@
 
 Install Python terbaru sama flask ya gan 😁
 
-- **[tutorial install flask(kalo pakai virtual enviroment](https://phoenixnap.com/kb/install-flask)**
+- **[tutorial install flask(kalo pakai virtual enviroment)](https://phoenixnap.com/kb/install-flask)**
+- kalo engga langsung aja pip install flask
 - **[tutorial flask](https://www.youtube.com/watch?v=mqhxxeeTbu0&list=PLzMcBGfZo4-n4vJJybUVV3Un_NFS5EOgX)**
 
 kalo ada masalah jalananin flask coba(beda sama tutorial)
