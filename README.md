@@ -10,7 +10,7 @@ kalo engga langsung aja pip install flask
 
 kalo ada masalah jalananin flask coba(beda sama tutorial)
 
-$env:FLASK_APP = "uicopy"
+$env:FLASK_APP = "ui"
 
 flask run / python -m flask run
 
