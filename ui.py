@@ -23,8 +23,12 @@ def shittChipher():
             enk_shitt = enc_shitt.encrypt_shitt(text_enk, key_enk)
         if key_dek != 10000:
             dek_shitt = dec_shitt.decrypt_shitt(text_dek, key_dek)
+        return render_template("ShittCipherstandard.html", content=[enk_shitt, dek_shitt])
+    else:
+        return render_template("ShittCipherstandard.html", content=[enk_shitt, dek_shitt])
+
         
-    return render_template("ShittCipherstandard.html", content=[enk_shitt, dek_shitt])
+    
 
 
 if __name__ == "__name_-":
