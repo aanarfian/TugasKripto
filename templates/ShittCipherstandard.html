@@ -48,7 +48,7 @@
                 <form action="/Shift-Cipher-standard" method="POST" enctype="multipart/form-data" name="inputfile" class="mb-2">
                         <div class="mb-3">
                           <label class="form-label">Text</label>
-                          <input name="text_enc" type="text" pattern="[A-Z]" class="form-control" required>
+                          <input name="text_enc" type="text" oninput="this.value = this.value.toUpperCase()" class="form-control" required>
                         </div>
                         <div class="mb-3">
                           <label class="form-label">Key</label>
@@ -67,7 +67,7 @@
                 <form action="/Shift-Cipher-standard" method="POST" enctype="multipart/form-data" name="inputfile" class="mb-2">
                     <div class="mb-3">
                       <label class="form-label">Text</label>
-                      <input name="text_dec" type="text" pattern="[A-Z]" class="form-control" required>
+                      <input name="text_dec" type="text" oninput="this.value = this.value.toUpperCase()" class="form-control" required>
                     </div>
                     <div class="mb-3">
                       <label class="form-label">Key</label>
