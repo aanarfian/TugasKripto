@@ -18,6 +18,4 @@ def decrypt_shitt(encrypted_text, shift):
             # since character is not uppercase, leave it as it is
             plain_text += c
 
-    print("Encrypted text:",encrypted_text)
-    print("Decrypted text:",plain_text)
     return plain_text

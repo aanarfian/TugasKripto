@@ -17,7 +17,5 @@ def encrypt_shitt(text, shift):
             # since character is not uppercase, leave it as it is
             encryption += c
             
-    print("Plain text:",text)
-    print("Encrypted text:",encryption)
     return encryption
 
