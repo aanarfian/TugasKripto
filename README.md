@@ -8,7 +8,9 @@ Install Python terbaru sama flask ya gan 😁
 - **[tutorial flask](https://www.youtube.com/watch?v=mqhxxeeTbu0)**
 
 kalo ada masalah jalananin flask coba(beda sama tutorial)
+
 $env:FLASK_APP = "uicopy"
+
 flask run / python -m flask run
 
 kalo masalahnya di cmd/powershell nya cari google ya lupa carane wkwk
