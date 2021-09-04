@@ -3,6 +3,7 @@
 # Persiapan
 
 Install Python terbaru sama flask ya gan 😁
+**tapi kalo bikin algonya aja ngga perlu instal flask wkwk
 
 - **[tutorial install flask(kalo pakai virtual enviroment)](https://phoenixnap.com/kb/install-flask)**
 kalo engga langsung aja pip install flask
