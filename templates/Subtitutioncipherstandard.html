@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% block title %}Subtitution Cipher standard (26 huruf alfabet){% endblock %}
-
 {% block script %}
 <script>
   function shuffle(o){
@@ -17,7 +16,6 @@
   }
 </script>
 {% endblock %}
-
 {% block content %}
   <div class="container py-5">
       <div class="row d-flex align-items-center" style="min-height: 60vh;">
@@ -28,11 +26,11 @@
               <form action="/Subtitution-Cipher-standard" method="POST" enctype="multipart/form-data" name="inputfile" class="mb-2">
                       <div class="mb-3">
                         <label class="form-label">Text</label>
-                        <input name="text_enc" type="text" pattern="[a-zA-Z]*" oninput="this.value = this.value.toUpperCase()" class="form-control" required>
+                        <input name="text_enc" type="text" placeholder="ALPHABET KAPITAL" pattern="[a-zA-Z]*" oninput="this.value = this.value.toUpperCase()" class="form-control" required>
                       </div>
                       <div class="mb-3">
                         <label class="form-label">Key</label>
-                        <input name="key_enc" type="text"  pattern="[a-zA-Z]*" oninput="this.value = this.value.toUpperCase()" class="form-control" id="acak" required>
+                        <input name="key_enc" type="text"  pattern="[a-zA-Z]{26}" placeholder="PERMUTASI 26 HURUF ALPHABET KAPITAL" oninput="this.value = this.value.toUpperCase()" class="form-control" id="acak" required>
                         <button type="button" class="btn btn-secondary mt-2" onclick="start()">Acak</button>
                       </div>
                       <button type="submit" class="btn btn-primary">Submit</button>
@@ -48,11 +46,11 @@
               <form action="/Subtitution-Cipher-standard" method="POST" enctype="multipart/form-data" name="inputfile" class="mb-2">
                   <div class="mb-3">
                     <label class="form-label">Text</label>
-                    <input name="text_dec" type="text" pattern="[a-zA-Z]*" oninput="this.value = this.value.toUpperCase()" class="form-control" required>
+                    <input name="text_dec" type="text" placeholder="ALPHABET KAPITAL" pattern="[a-zA-Z]*" oninput="this.value = this.value.toUpperCase()" class="form-control" required>
                   </div>
                   <div class="mb-3">
                     <label class="form-label">Key</label>
-                    <input name="key_dec" type="text"  pattern="[a-zA-Z]*" oninput="this.value = this.value.toUpperCase()" class="form-control" required>
+                    <input name="key_dec" type="text"  pattern="[a-zA-Z]{26}" placeholder="PERMUTASI 26 HURUF ALPHABET KAPITAL" oninput="this.value = this.value.toUpperCase()" class="form-control" required>
                   </div>
                   <button type="submit" class="btn btn-primary">Submit</button>
               </form>

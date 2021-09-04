@@ -12,11 +12,11 @@
           <form action="/Shift-Cipher-standard" method="POST" enctype="multipart/form-data" name="inputfile" class="mb-2">
                   <div class="mb-3">
                     <label class="form-label">Text</label>
-                    <input name="text_enc" type="text" pattern="[a-zA-Z]*" oninput="this.value = this.value.toUpperCase()" class="form-control" required>
+                    <input name="text_enc" type="text"  placeholder="ALPHABET KAPITAL" pattern="[a-zA-Z]*" oninput="this.value = this.value.toUpperCase()" class="form-control" required>
                   </div>
                   <div class="mb-3">
                     <label class="form-label">Key</label>
-                    <input name="key_enc" type="number" class="form-control" required>
+                    <input name="key_enc" type="number" placeholder="BILANGAN 0-26" class="form-control" required>
                   </div>
                   <button type="submit" class="btn btn-primary">Submit</button>
           </form>
@@ -31,11 +31,11 @@
           <form action="/Shift-Cipher-standard" method="POST" enctype="multipart/form-data" name="inputfile" class="mb-2">
               <div class="mb-3">
                 <label class="form-label">Text</label>
-                <input name="text_dec" type="text" pattern="[a-zA-Z]*" oninput="this.value = this.value.toUpperCase()" class="form-control" required>
+                <input name="text_dec" type="text" placeholder="ALPHABET KAPITAL" pattern="[a-zA-Z]*" oninput="this.value = this.value.toUpperCase()" class="form-control" required>
               </div>
               <div class="mb-3">
                 <label class="form-label">Key</label>
-                <input name="key_dec" type="number" class="form-control" required>
+                <input name="key_dec" placeholder="BILANGAN 0-26" type="number" class="form-control" required>
               </div>
               <button type="submit" class="btn btn-primary">Submit</button>
           </form>
