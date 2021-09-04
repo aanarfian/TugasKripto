@@ -15,4 +15,4 @@ def decrypt_subsitution(encrypt, key):
 
     return decryption
 
-print(decrypt_subsitution("KPAKPA", "KLCODFMWSRPUENXQZITYAVJGHB"))
+# print(decrypt_subsitution("KPAKPA", "KLCODFMWSRPUENXQZITYAVJGHB"))
