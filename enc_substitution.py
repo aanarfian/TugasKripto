@@ -6,11 +6,13 @@ def encrypt_subsitution(text, key):
     encryption = ""
 
     for c in text :
-        if re.search(c, alphabet):
-            x = re.search(c, alphabet)
+        x = re.search(c, alphabet)
+        if x :
             new_character = key[x.start()]
             encryption += new_character
         else:
             encryption += c
 
     return encryption
+
+print(encrypt_subsitution("AKUAKU", "KLCODFMWSRPUENXQZITYAVJGHB"))

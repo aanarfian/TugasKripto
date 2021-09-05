@@ -6,8 +6,8 @@ def decrypt_subsitution(encrypt, key):
     decryption = ""
 
     for c in encrypt :
-        if re.search(c, key):
-            x = re.search(c, key)
+        x = re.search(c, key)
+        if x:
             new_character = alphabet[x.start()]
             decryption += new_character
         else:
@@ -15,4 +15,4 @@ def decrypt_subsitution(encrypt, key):
 
     return decryption
 
-# print(decrypt_subsitution("KPAKPA", "KLCODFMWSRPUENXQZITYAVJGHB"))
+print(decrypt_subsitution("KPAKPA", "KLCODFMWSRPUENXQZITYAVJGHB"))

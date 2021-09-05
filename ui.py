@@ -38,8 +38,6 @@ def subsitution():
         key_dek = con.constring(request.form.get("key_dec"))
         text_enk = request.form.get("text_enc")
         text_dek = request.form.get("text_dec")
-        print(text_enk)
-        print(key_enk)
         if key_enk != 10000:
             enk_subsitution = enc_substitution.encrypt_subsitution(text_enk, key_enk)
         if key_dek != 10000:
