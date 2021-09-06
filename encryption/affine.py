@@ -1,17 +1,8 @@
-from utils import get_int_representation_of, get_text_from
+from .utils import get_int_representation_of, get_text_from
 
+import math
 import unittest
 
-
-ENCRYPTION_KEY = (5, 3)
-
-ENCRYPT_FUNC = lambda x: (ENCRYPTION_KEY[0] * x + ENCRYPTION_KEY[1]) % 26
-# TODO: Buat logika untuk mendapatkan invers dari A.
-#       Pada fungsi dekripsi di bawah ini, invers dari
-#       A diberikan secara manual (hardcoded). Sehingga
-#       apabila encryption key berubah, maka fungsi ini
-#       harus diubah kembali
-DECRYPT_FUNC = lambda y: (21 * (y - ENCRYPTION_KEY[1])) % 26
 
 class Affine:
     '''
@@ -25,7 +16,9 @@ class Affine:
 
             plaintext = 'hello world'
 
-            ciphertext = Affine.encrypt(plaintext)
+            a = 5
+            b = 3
+            ciphertext = Affine.encrypt(plaintext, a, b)
 
 
      2. Dekripsi
@@ -34,11 +27,18 @@ class Affine:
 
             ciphertext = 'blah blah blah'
 
-            plaintext = Affine.decrypt(ciphertext)
+            a = 5
+            b = 3
+            plaintext = Affine.decrypt(ciphertext, a, b)
     '''
 
     @staticmethod
-    def encrypt(plaintext):
+    def encrypt(plaintext, a = 5, b = 3):
+        if math.gcd(a, 26) > 1:
+            raise Exception('key a harus berupa bilangan yang coprime dengan 26')
+
+        ENCRYPT_FUNC = lambda x: (a * x + b) % 26
+
         int_repr = get_int_representation_of(plaintext)
         if int_repr == None:
             raise Exception('tidak support karakter selain alfabet')
@@ -48,7 +48,13 @@ class Affine:
 
 
     @staticmethod
-    def decrypt(ciphertext):
+    def decrypt(ciphertext, a = 5, b = 3):
+        if math.gcd(a, 26) > 1:
+            raise Exception('key a harus berupa bilangan yang coprime dengan 26')
+
+        a_invers = [i for i in range(26) if (a * i) % 26 == 1][0]
+        DECRYPT_FUNC = lambda y: (a_invers * (y - b)) % 26
+
         int_repr = get_int_representation_of(ciphertext)
         if int_repr == None:
             raise Exception('invalid cipher text')
@@ -70,9 +76,14 @@ class AffineTest(unittest.TestCase):
             ciphertext = Affine.encrypt(c[0])
             self.assertEqual(expected, ciphertext)
 
-        # invalid test case
-        invalid_plaintext = '123!@#'
-        self.assertRaises(Exception, Affine.encrypt, invalid_plaintext)
+        invalid_cases = [
+            # (text, a, b)
+            ('123', 3, 5),  # invalid input
+            ('abc', 13, 2), # key a bukan coprime dari 26
+        ]
+
+        for c in invalid_cases:
+            self.assertRaises(Exception, Affine.encrypt, c[0], c[1], c[2])
 
 
     def test_decrypt(self):
@@ -86,18 +97,31 @@ class AffineTest(unittest.TestCase):
             plaintext = Affine.decrypt(c[0])
             self.assertEqual(expected, plaintext)
 
-        # invalid test case
-        invalid_ciphertext = '@12345'
-        self.assertRaises(Exception, Affine.decrypt, invalid_ciphertext)
+        invalid_cases = [
+            # (text, a, b)
+            ('123', 3, 5),  # invalid input
+            ('abc', 13, 2), # key a bukan coprime dari 26
+        ]
+
+        for c in invalid_cases:
+            self.assertRaises(Exception, Affine.decrypt, c[0], c[1], c[2])
 
 
     def test_encrypt_decrypt(self):
-        texts = ['helloworld', 'affine', 'laksjfdpi', 'AAA']
+        cases = [
+            # (text, key_a, key_b)
+            ('helloworld', 3, 2),
+            ('affine', 5, 1),
+            ('laksjfdpi', 9, 5),
+            ('AAA', 11, 17),
+        ]
 
-        for text in texts:
-            encrypted = Affine.encrypt(text)
-            decrypted = Affine.decrypt(encrypted)
-            self.assertEqual(text.upper(), decrypted)
+        for c in cases:
+            a = c[1]
+            b = c[2]
+            encrypted = Affine.encrypt(c[0], a, b)
+            decrypted = Affine.decrypt(encrypted, a, b)
+            self.assertEqual(c[0].upper(), decrypted)
 
 
 if __name__ == '__main__':
