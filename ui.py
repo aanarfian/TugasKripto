@@ -5,6 +5,7 @@ import enc_substitution
 import dec_substitution
 import convertThings as con
 
+
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
@@ -31,7 +32,6 @@ def shittChipher():
 
 @app.route("/Subtitution-Cipher-standard", methods=['POST', 'GET'])
 def subsitution():
-    is_substitution = 1
     enk_subsitution = ""
     dek_subsitution = ""
     if request.method == "POST":

@@ -2,10 +2,10 @@ import re
 
 def decrypt_subsitution(encrypt, key):
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    encrypt.upper()
+    uppercased = encrypt.upper()
     decryption = ""
 
-    for c in encrypt :
+    for c in uppercased :
         x = re.search(c, key)
         if x:
             new_character = alphabet[x.start()]

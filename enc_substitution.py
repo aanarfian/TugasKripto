@@ -2,10 +2,10 @@ import re
 
 def encrypt_subsitution(text, key):
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    text.upper()
+    uppercased = text.upper()
     encryption = ""
 
-    for c in text :
+    for c in uppercased :
         x = re.search(c, alphabet)
         if x :
             new_character = key[x.start()]
@@ -14,5 +14,3 @@ def encrypt_subsitution(text, key):
             encryption += c
 
     return encryption
-
-print(encrypt_subsitution("AKUAKU", "KLCODFMWSRPUENXQZITYAVJGHB"))

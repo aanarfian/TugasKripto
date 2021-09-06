@@ -1,20 +1,14 @@
 def encrypt_shitt(text, shift):
     encryption = ""
     for c in text:
-        # check if character is an uppercase letter
         if c.isupper():
-            # find the position in 0-25
             c_index = ord(c) - ord("A")
-            # perform the shift
-            new_index = (c_index + shift) % 26
-            # convert to new character
-            new_unicode = new_index + ord("A")
-            new_character = chr(new_unicode)
-            # append to encrypted string
-            encryption = encryption + new_character
+            index_baru = (c_index + shift) % 26
+            unicode_baru = index_baru + ord("A")
+            karakter_baru = chr(unicode_baru)
+            encryption = encryption + karakter_baru
 
         else:
-            # since character is not uppercase, leave it as it is
             encryption += c
             
     return encryption
