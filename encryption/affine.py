@@ -3,16 +3,6 @@ from utils import get_int_representation_of, get_text_from
 import unittest
 
 
-ENCRYPTION_KEY = (5, 3)
-
-ENCRYPT_FUNC = lambda x: (ENCRYPTION_KEY[0] * x + ENCRYPTION_KEY[1]) % 26
-# TODO: Buat logika untuk mendapatkan invers dari A.
-#       Pada fungsi dekripsi di bawah ini, invers dari
-#       A diberikan secara manual (hardcoded). Sehingga
-#       apabila encryption key berubah, maka fungsi ini
-#       harus diubah kembali
-DECRYPT_FUNC = lambda y: (21 * (y - ENCRYPTION_KEY[1])) % 26
-
 class Affine:
     '''
     Implementasi algoritma Affine Cipher.
@@ -36,7 +26,9 @@ class Affine:
 
             ciphertext = 'blah blah blah'
 
-            plaintext = Affine.decrypt(ciphertext)
+            a = 5
+            b = 3
+            plaintext = Affine.decrypt(ciphertext, a, b)
     '''
 
     @staticmethod
@@ -52,7 +44,10 @@ class Affine:
 
 
     @staticmethod
-    def decrypt(ciphertext):
+    def decrypt(ciphertext, a = 5, b = 3):
+        a_invers = [i for i in range(26) if (a * i) % 26 == 1][0]
+        DECRYPT_FUNC = lambda y: (a_invers * (y - b)) % 26
+
         int_repr = get_int_representation_of(ciphertext)
         if int_repr == None:
             raise Exception('invalid cipher text')
