@@ -1,5 +1,11 @@
+from utils import get_int_representation_of, get_text_from
+
 import unittest
 
+
+ENCRYPTION_KEY = (5, 3)
+
+ENCRYPT_FUNC = lambda x: (ENCRYPTION_KEY[0] * x + ENCRYPTION_KEY[1]) % 26
 
 class Affine:
     '''
@@ -27,7 +33,13 @@ class Affine:
 
     @staticmethod
     def encrypt(plaintext):
-        pass
+        int_repr = get_int_representation_of(plaintext)
+        if int_repr == None:
+            raise Exception('tidak support karakter selain alfabet')
+    
+        encrypted_int_repr = [ENCRYPT_FUNC(x) for x in int_repr]
+        return get_text_from(encrypted_int_repr)
+
 
     @staticmethod
     def decrypt(ciphertext):
@@ -37,7 +49,20 @@ class Affine:
 class AffineTest(unittest.TestCase):
 
     def test_encrypt(self):
-        pass
+        cases = [
+            ('CRYPTO', 'NKTAUV'),
+            ('crypto', 'NKTAUV'),
+        ]
+
+        for c in cases:
+            expected = c[1]
+            ciphertext = Affine.encrypt(c[0])
+            self.assertEqual(expected, ciphertext)
+
+        # invalid test case
+        invalid_plaintext = '123!@#'
+        self.assertRaises(Exception, Affine.encrypt, invalid_plaintext)
+
 
     def test_decrypt(self):
         pass
