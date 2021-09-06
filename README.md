@@ -24,3 +24,4 @@ list tugas
 - Vigenere Cipher standard (26 huruf alfabet)
 - Extended Vigenere Cipher (256 karakter ASCII)
 - Hill chipher (26 huruf alfabet)
+- Playfair Cipher (26 huruf alfabet)
