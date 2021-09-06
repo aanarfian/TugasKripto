@@ -92,7 +92,12 @@ class AffineTest(unittest.TestCase):
 
 
     def test_encrypt_decrypt(self):
-        pass
+        texts = ['helloworld', 'affine', 'laksjfdpi', 'AAA']
+
+        for text in texts:
+            encrypted = Affine.encrypt(text)
+            decrypted = Affine.decrypt(encrypted)
+            self.assertEqual(text.upper(), decrypted)
 
 
 if __name__ == '__main__':
