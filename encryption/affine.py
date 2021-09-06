@@ -25,7 +25,9 @@ class Affine:
 
             plaintext = 'hello world'
 
-            ciphertext = Affine.encrypt(plaintext)
+            a = 5
+            b = 3
+            ciphertext = Affine.encrypt(plaintext, a, b)
 
 
      2. Dekripsi
@@ -38,7 +40,9 @@ class Affine:
     '''
 
     @staticmethod
-    def encrypt(plaintext):
+    def encrypt(plaintext, a = 5, b = 3):
+        ENCRYPT_FUNC = lambda x: (a * x + b) % 26
+
         int_repr = get_int_representation_of(plaintext)
         if int_repr == None:
             raise Exception('tidak support karakter selain alfabet')
