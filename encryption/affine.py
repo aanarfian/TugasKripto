@@ -6,6 +6,12 @@ import unittest
 ENCRYPTION_KEY = (5, 3)
 
 ENCRYPT_FUNC = lambda x: (ENCRYPTION_KEY[0] * x + ENCRYPTION_KEY[1]) % 26
+# TODO: Buat logika untuk mendapatkan invers dari A.
+#       Pada fungsi dekripsi di bawah ini, invers dari
+#       A diberikan secara manual (hardcoded). Sehingga
+#       apabila encryption key berubah, maka fungsi ini
+#       harus diubah kembali
+DECRYPT_FUNC = lambda y: (21 * (y - ENCRYPTION_KEY[1])) % 26
 
 class Affine:
     '''
@@ -43,7 +49,12 @@ class Affine:
 
     @staticmethod
     def decrypt(ciphertext):
-        pass
+        int_repr = get_int_representation_of(ciphertext)
+        if int_repr == None:
+            raise Exception('invalid cipher text')
+
+        decrypted_int_repr = [DECRYPT_FUNC(y) for y in int_repr]
+        return get_text_from(decrypted_int_repr)
 
 
 class AffineTest(unittest.TestCase):
@@ -65,7 +76,20 @@ class AffineTest(unittest.TestCase):
 
 
     def test_decrypt(self):
-        pass
+        cases = [
+            ('NKTAUV', 'CRYPTO'),
+            ('MXGGVJVKGS', 'HELLOWORLD'),
+        ]
+
+        for c in cases:
+            expected = c[1]
+            plaintext = Affine.decrypt(c[0])
+            self.assertEqual(expected, plaintext)
+
+        # invalid test case
+        invalid_ciphertext = '@12345'
+        self.assertRaises(Exception, Affine.decrypt, invalid_ciphertext)
+
 
     def test_encrypt_decrypt(self):
         pass
