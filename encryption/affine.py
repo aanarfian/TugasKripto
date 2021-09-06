@@ -1,4 +1,4 @@
-from utils import get_int_representation_of, get_text_from
+from .utils import get_int_representation_of, get_text_from
 
 import math
 import unittest
