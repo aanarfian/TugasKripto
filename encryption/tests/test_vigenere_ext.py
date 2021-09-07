@@ -1,5 +1,7 @@
 from ..vigenere_ext import VigenereExt
 
+import random
+import string
 import unittest
 
 
@@ -30,3 +32,20 @@ class VigenereExtTest(unittest.TestCase):
             expected = c[2]
             get = VigenereExt.decrypt(c[0], c[1])
             self.assertEqual(expected, get)
+
+
+    def test_encrypt_decrypt(self):
+        plainbytes = [
+            [1, 2, 3, 4, 5, 6],
+            [54, 23, 89, 100],
+            [255, 244, 233, 222, 211],
+            [123, 140, 153, 139],
+        ]
+
+        for pb in plainbytes:
+            KEY = ''.join(random.choices(string.ascii_uppercase, k = 3))
+
+            encrypted = VigenereExt.encrypt(pb, KEY)
+            decrypted = VigenereExt.decrypt(encrypted, KEY)
+
+            self.assertEqual(pb, decrypted)
