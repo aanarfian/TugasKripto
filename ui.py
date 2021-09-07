@@ -1,9 +1,8 @@
-from flask import Flask,jsonify, render_template, request, redirect, send_from_directory
-import dec_shitt
-import enc_shitt
-import enc_substitution
-import dec_substitution
+from flask import Flask, render_template, request, redirect
+import encryption.shift as shift
+import encryption.substitution as substitution
 import convertThings as con
+from encryption.affine import Affine
 
 
 app = Flask(__name__)
@@ -23,9 +22,9 @@ def shittChipher():
         text_enk = request.form.get("text_enc")
         text_dek = request.form.get("text_dec")
         if key_enk != -1:
-            enk_shitt = enc_shitt.encrypt_shitt(text_enk, key_enk)
+            enk_shitt = shift.encrypt_shitt(text_enk, key_enk)
         if key_dek != -1:
-            dek_shitt = dec_shitt.decrypt_shitt(text_dek, key_dek)
+            dek_shitt = shift.decrypt_shitt(text_dek, key_dek)
         return render_template("ShittCipherstandard.html", content=[enk_shitt, dek_shitt] , is_shift = 'yes')
     else:
         return render_template("ShittCipherstandard.html", content=[enk_shitt, dek_shitt], is_shift = 'yes')
@@ -40,12 +39,32 @@ def subsitution():
         text_enk = request.form.get("text_enc")
         text_dek = request.form.get("text_dec")
         if key_enk != -1:
-            enk_subsitution = enc_substitution.encrypt_subsitution(text_enk, key_enk)
+            enk_subsitution = substitution.encrypt_subsitution(text_enk, key_enk)
         if key_dek != -1:
-            dek_subsitution = dec_substitution.decrypt_subsitution(text_dek, key_dek)
+            dek_subsitution = substitution.decrypt_subsitution(text_dek, key_dek)
         return render_template("Subtitutioncipherstandard.html", content=[enk_subsitution, dek_subsitution], is_substitution = 'yes')
     else:
         return render_template("Subtitutioncipherstandard.html", content=[enk_subsitution, dek_subsitution], is_substitution = 'yes')
+
+
+@app.route("/Affine-Cipher-standard", methods=['POST', 'GET'])
+def affine():
+    enk_affine = ""
+    dek_affine = ""
+    if request.method == "POST":
+        key_enk_a = con.conint(request.form.get("key_enc_a"))
+        key_enk_b = con.conint(request.form.get("key_enc_b"))
+        key_dek_a = con.conint(request.form.get("key_dec_a"))
+        key_dek_b = con.conint(request.form.get("key_dec_b"))
+        text_enk = request.form.get("text_enc")
+        text_dek = request.form.get("text_dec")
+        if key_enk_a and key_enk_b != -1:
+            enk_affine = Affine.encrypt(text_enk, key_enk_a, key_enk_b)
+        if key_dek_a and key_dek_b != -1:
+            dek_affine = Affine.decrypt(text_dek, key_dek_a, key_dek_b)
+        return render_template("affinechipherstandard.html", content=[enk_affine, dek_affine], is_affine = 'yes')
+    else:
+        return render_template("affinechipherstandard.html", content=[enk_affine, dek_affine], is_affine = 'yes')
 
 if __name__ == "__name_-":
     app.run()
