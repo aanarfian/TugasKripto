@@ -41,3 +41,19 @@ class VigenereExt:
             key_index = (key_index + 1) % len(key_int_repr)
 
         return cipherbytes
+
+
+    @staticmethod
+    def decrypt(cipherbytes, key = DEFAULT_KEY):
+        if not key:
+            raise Exception('key tidak boleh kosong')
+
+        key_int_repr = get_int_representation_of(key)
+        key_index = 0
+
+        plainbytes = []
+        for b in cipherbytes:
+            plainbytes.append((b - key_int_repr[key_index]) % 256)
+            key_index = (key_index + 1) % len(key_int_repr)
+
+        return plainbytes
