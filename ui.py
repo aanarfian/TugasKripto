@@ -58,9 +58,9 @@ def affine():
         key_dek_b = con.conint(request.form.get("key_dec_b"))
         text_enk = request.form.get("text_enc")
         text_dek = request.form.get("text_dec")
-        if key_enk_a and key_enk_b != -1:
+        if key_enk_a != -1 and key_enk_b != -1:
             enk_affine = Affine.encrypt(text_enk, key_enk_a, key_enk_b)
-        if key_dek_a and key_dek_b != -1:
+        if key_dek_a != -1 and key_dek_b != -1:
             dek_affine = Affine.decrypt(text_dek, key_dek_a, key_dek_b)
         return render_template("affinechipherstandard.html", content=[enk_affine, dek_affine], is_affine = 'yes')
     else:
