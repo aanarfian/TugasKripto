@@ -101,5 +101,31 @@
 {% endblock %}
 
 {% block script %}
+  <script>
+    window.onload = function() {
 
+      // Template untuk membuat tipe input/output dapat
+      // dinamis dengan mudah.
+      const TEMPLATES = {
+        INPUT: {
+          TEXTAREA: document.querySelector("#enc-template-input-textarea").innerHTML,
+          FILE: document.querySelector("#enc-template-input-file").innerHTML,
+        },
+      };
+
+      // Mengubah tipe input enkripsi secara dinamis
+      document.querySelector("#enc-input-type")
+          .addEventListener("change", function () {
+            const inputType = document.querySelector("#enc-input-type").value;
+            const newInputEl = inputType == "text"
+                ? TEMPLATES.INPUT.TEXTAREA
+                : TEMPLATES.INPUT.FILE;
+
+            document.querySelector("#enc-input-box").innerHTML = newInputEl;
+          });
+
+      // Inisialisasi ketika page baru diload.
+      document.querySelector("#enc-input-box").innerHTML = TEMPLATES.INPUT.TEXTAREA;
+    };
+  </script>
 {% endblock %}
