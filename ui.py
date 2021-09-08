@@ -66,5 +66,11 @@ def affine():
     else:
         return render_template("affinechipherstandard.html", content=[enk_affine, dek_affine], is_affine = 'yes')
 
+
+@app.route("/vigenere-ext-cipher", methods=['POST', 'GET'])
+def vigenere_ext():
+    return render_template('vigenere_ext_cipher.html')
+
+
 if __name__ == "__name_-":
     app.run()
