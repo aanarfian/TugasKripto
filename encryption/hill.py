@@ -5,7 +5,11 @@ alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 letter_to_index = dict(zip(alphabet, range(len(alphabet))))
 index_to_letter = dict(zip(range(len(alphabet)), alphabet))
 
+def key_to_matrix(key):
+    return np.matrix(key)
+
 def encrypt_hill(text, key):
+    key = key_to_matrix(key)
     encrypted_text = ""
     text_index = []
 
@@ -37,6 +41,7 @@ def inverse_matrix_modm(matrix, modulus):
     return matrix_inv_mod
 
 def decrypt_hill(text, key):
+    key = key_to_matrix(key)
     key = inverse_matrix_modm(key, len(alphabet))
 
     decrypted_text = ""
