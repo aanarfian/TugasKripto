@@ -20,6 +20,9 @@
         <form id="enc-form" action="/vigenere-ext-cipher" method="POST" class="mb-2">
 
           <label class="form-label">Input</label>
+          <span id="enc-input-data-err" class="d-none text-danger">
+            &nbsp;<span></span>
+          </span>
 
           <div class="mb-3 w-50">
             <select id="enc-input-type" class="form-select mb-3">
@@ -32,6 +35,9 @@
 
           <div class="mb-3 w-50">
             <label class="form-label">Key</label>
+            <span id="enc-input-key-err" class="d-none text-danger">
+              &nbsp;<span></span>
+            </span>
 
             <input id="enc-input-key" class="form-control" name="enc_key" type="text"
                 placeholder="e.g. SEBUAHKEY (tidak boleh ada karakter selain huruf alfabet)">
@@ -162,10 +168,54 @@
             });
 
         /**
+         * Validator untuk input-input.
+         */
+        const validators = {
+          validateInputData: function () {
+            if (!input) {
+              document.querySelector("#enc-input-data-err")
+                  .classList.remove("d-none");
+              document.querySelector("#enc-input-data-err span")
+                  .innerHTML = "* data tidak valid";
+
+              return false;
+            }
+
+            document.querySelector("#enc-input-data-err")
+                .classList.add("d-none");
+            return true;
+          },
+
+          validateKey: function () {
+            const key = document.querySelector("#enc-input-key").value ?? "";
+
+            if (!key.match(/[A-Z]+/i)) {
+              document.querySelector("#enc-input-key-err")
+                  .classList.remove("d-none");
+              document.querySelector("#enc-input-key-err span")
+                  .innerHTML = "* key harus terdiri atas huruf alfabet";
+
+              return false;
+            }
+
+            document.querySelector("#enc-input-key-err")
+                .classList.add("d-none");
+            return true;
+          },
+        };
+
+        /**
          * Handle submit.
          */
         document.querySelector("#enc-form")
             .addEventListener("submit", function (event) {
+              const isValidInputData = validators.validateInputData();
+              const isValidKey = validators.validateKey();
+
+              if (!isValidInputData || !isValidKey) {
+                event.preventDefault();
+              }
+
               document.querySelector("#enc-real-content").value = input;
               event.preventDefault();
             });
