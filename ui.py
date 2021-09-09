@@ -5,7 +5,9 @@ import convertThings as con
 from encryption.affine import Affine
 import encryption.playfair as pf
 import encryption.vigenere as vig
-import encryption.hill as hill
+import encryption.hill as hillcipher
+import math
+from numpy.core.fromnumeric import reshape
 
 
 app = Flask(__name__)
@@ -96,12 +98,36 @@ def vignere():
         text_enk = request.form.get("text_enc")
         text_dek = request.form.get("text_dec")
         if key_enk != -1:
-            enk_vignere = pf.encrypt_playfair(text_enk, key_enk)
+            enk_vignere = vig.encrypt_vigenere(text_enk, key_enk)
         if key_dek != -1:
-            dek_vignere = pf.decrypt_playfair(text_dek, key_dek)
+            dek_vignere = vig.decrypt_vigenere(text_dek, key_dek)
         return render_template("Vignerecipherstandard.html", content=[enk_vignere, dek_vignere], is_vignere = 'yes')
     else:
         return render_template("Vignerecipherstandard.html", content=[enk_vignere, dek_vignere], is_vignere = 'yes')
+
+
+@app.route("/Hill-Cipher-standard", methods=['POST', 'GET'])
+def hill():
+    enk_hill = ""
+    dek_hill = ""
+    if request.method == "POST":
+        text_enk = request.form.get("text_enc")
+        text_dek = request.form.get("text_dec")
+        key_enk = con.constring(request.form.get("key_enc"))
+        key_dek = con.constring(request.form.get("key_dec"))
+        if key_enk != -1:
+            arr = list(map(int, key_enk.split()))
+            sqrt = math.sqrt(len(arr))
+            arr2 = reshape(arr, (int(sqrt), int(sqrt)))
+            enk_hill = hillcipher.encrypt_hill(text_enk, arr2)
+        if key_dek != -1:
+            arr0 = list(map(int, key_dek.split()))
+            sqrt = math.sqrt(len(arr0))
+            arr3 = reshape(arr0, (int(sqrt), int(sqrt)))
+            dek_hill = hillcipher.decrypt_hill(text_dek, arr3)
+        return render_template("Hillcipherstandard.html", content=[enk_hill, dek_hill], is_hill = 'yes')
+    else:
+        return render_template("Hillcipherstandard.html", content=[enk_hill, dek_hill], is_hill = 'yes')
 
 if __name__ == "__name_-":
     app.run()
