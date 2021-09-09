@@ -17,8 +17,7 @@
         <h1 class="display-4 mb-4">Enkripsi</h1>
 
         <!-- form text dan shift -->
-        <form action="/Subtitution-Cipher-standard" method="POST"
-            enctype="multipart/form-data" name="inputfile" class="mb-2">
+        <form id="enc-form" action="/vigenere-ext-cipher" method="POST" class="mb-2">
 
           <label class="form-label">Input</label>
 
@@ -34,9 +33,11 @@
           <div class="mb-3 w-50">
             <label class="form-label">Key</label>
 
-            <input id="enc-input-key" class="form-control" name="key_enc" type="text"
+            <input id="enc-input-key" class="form-control" name="enc_key" type="text"
                 placeholder="e.g. SEBUAHKEY (tidak boleh ada karakter selain huruf alfabet)">
           </div>
+
+          <input type="hidden" id="enc-real-content" name="enc_content">
 
           <button type="submit" id="enc-input-submit" class="btn btn-primary">
             Submit
@@ -113,19 +114,67 @@
         },
       };
 
-      // Mengubah tipe input enkripsi secara dinamis
-      document.querySelector("#enc-input-type")
-          .addEventListener("change", function () {
-            const inputType = document.querySelector("#enc-input-type").value;
-            const newInputEl = inputType == "text"
-                ? TEMPLATES.INPUT.TEXTAREA
-                : TEMPLATES.INPUT.FILE;
+      /**
+       * Logika input.
+       */
+      (function () {
+        let input;
 
-            document.querySelector("#enc-input-box").innerHTML = newInputEl;
-          });
+        /**
+         * Input handlers.
+         */
+        const inputHandlers = {
+          text: function (event) {
+            input = event.target.value;
+          },
 
-      // Inisialisasi ketika page baru diload.
-      document.querySelector("#enc-input-box").innerHTML = TEMPLATES.INPUT.TEXTAREA;
+          file: function (event) {
+            const reader = new FileReader();
+
+            reader.addEventListener("load", function (event) {
+              input = event.target.result;
+            });
+
+            reader.readAsText(event.target.files[0], "ASCII");
+          },
+        };
+
+        /**
+         * Handle perubahan tipe data input.
+         */
+        document.querySelector("#enc-input-type")
+            .addEventListener("change", function () {
+              const inputType = document.querySelector("#enc-input-type").value;
+              const newInputEl = inputType == "text"
+                  ? TEMPLATES.INPUT.TEXTAREA
+                  : TEMPLATES.INPUT.FILE;
+
+              document.querySelector("#enc-input-box").innerHTML = newInputEl;
+              input = "";
+
+              if (inputType === "file") {
+                document.querySelector(".enc-input-file")
+                    .addEventListener("change", inputHandlers.file);
+              } else {
+                document.querySelector(".enc-input-textarea")
+                    .addEventListener("change", inputHandlers.text);
+              }
+            });
+
+        /**
+         * Handle submit.
+         */
+        document.querySelector("#enc-form")
+            .addEventListener("submit", function (event) {
+              document.querySelector("#enc-real-content").value = input;
+              event.preventDefault();
+            });
+
+        // Trigger inisialisasi ketika page baru diload
+        // pertama kali.
+        document.querySelector("#enc-input-type")
+            .dispatchEvent(new Event("change"));
+      })();
     };
   </script>
 {% endblock %}
