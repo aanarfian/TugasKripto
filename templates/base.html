@@ -56,12 +56,12 @@
                   {% endif %}
 
                   {% if is_vigenere is not defined %}
-                  <a class="nav-link" href="#">Vigenere</a>
+                  <a class="nav-link" href="/Vignere-Cipher-standard">Vigenere</a>
                   {% else %}
-                  <a class="nav-link active" href="#">Vigenere</a>
+                  <a class="nav-link active" href="/Vignere-Cipher-standard">Vigenere</a>
                   {% endif %}
 
-                  {% if is_evignere is not defined %}
+                  {% if is_ext_vignere is not defined %}
                   <a class="nav-link" href="#">Extended Vigenere</a>
                   {% else %}
                   <a class="nav-link active" href="#">Extended Vigenere</a>
@@ -71,6 +71,12 @@
                   <a class="nav-link" href="#">Hill</a>
                   {% else %}
                   <a class="nav-link active" href="#">Hill</a>
+                  {% endif %}
+
+                  {% if is_playfair is not defined %}
+                  <a class="nav-link" href="/Playfair-Cipher-standard">Playfair</a>
+                  {% else %}
+                  <a class="nav-link active" href="/Playfair-Cipher-standard">Playfair</a>
                   {% endif %}
                   
                 </div>

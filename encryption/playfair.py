@@ -1,6 +1,3 @@
-from typing import Text
-
-
 def genereteKeyGrid(key):
     keyGrid = [[0 for x in range(5)] for y in range(5)]
     dicty = [0]*26
@@ -121,7 +118,7 @@ def decrypt_playfair(plaintext, key):
     return ciphertext
 
 # print(playfair("INSTRUMENTS", "MONARCHY"))
-print(decrypt_playfair("GATLMZCLRQ","MONARCHY"))
+# print(decrypt_playfair("GATLMZCLRQ","MONARCHY"))
 
 
 

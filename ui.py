@@ -3,6 +3,9 @@ import encryption.shift as shift
 import encryption.substitution as substitution
 import convertThings as con
 from encryption.affine import Affine
+import encryption.playfair as pf
+import encryption.vigenere as vig
+import encryption.hill as hill
 
 
 app = Flask(__name__)
@@ -65,6 +68,40 @@ def affine():
         return render_template("affinechipherstandard.html", content=[enk_affine, dek_affine], is_affine = 'yes')
     else:
         return render_template("affinechipherstandard.html", content=[enk_affine, dek_affine], is_affine = 'yes')
+
+@app.route("/Playfair-Cipher-standard", methods=['POST', 'GET'])
+def playfair():
+    enk_playfair = ""
+    dek_playfair = ""
+    if request.method == "POST":
+        key_enk = con.constring(request.form.get("key_enc"))
+        key_dek = con.constring(request.form.get("key_dec"))
+        text_enk = request.form.get("text_enc")
+        text_dek = request.form.get("text_dec")
+        if key_enk != -1:
+            enk_playfair = pf.encrypt_playfair(text_enk, key_enk)
+        if key_dek != -1:
+            dek_playfair = pf.decrypt_playfair(text_dek, key_dek)
+        return render_template("Playfaircipherstandard.html", content=[enk_playfair, dek_playfair], is_playfair = 'yes')
+    else:
+        return render_template("Playfaircipherstandard.html", content=[enk_playfair, dek_playfair], is_playfair = 'yes')
+
+@app.route("/Vignere-Cipher-standard", methods=['POST', 'GET'])
+def vignere():
+    enk_vignere = ""
+    dek_vignere = ""
+    if request.method == "POST":
+        key_enk = con.constring(request.form.get("key_enc"))
+        key_dek = con.constring(request.form.get("key_dec"))
+        text_enk = request.form.get("text_enc")
+        text_dek = request.form.get("text_dec")
+        if key_enk != -1:
+            enk_vignere = pf.encrypt_playfair(text_enk, key_enk)
+        if key_dek != -1:
+            dek_vignere = pf.decrypt_playfair(text_dek, key_dek)
+        return render_template("Vignerecipherstandard.html", content=[enk_vignere, dek_vignere], is_vignere = 'yes')
+    else:
+        return render_template("Vignerecipherstandard.html", content=[enk_vignere, dek_vignere], is_vignere = 'yes')
 
 if __name__ == "__name_-":
     app.run()
