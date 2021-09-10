@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}hill Cipher standard (26 huruf alfabet){% endblock %}
+{% block content %}
+  <div class="container py-5">
+      <div class="row d-flex align-items-center" style="min-height: 60vh;">
+          <div class="col">
+            <h1 class="display-2 mb-5">Hill Cipher standard (26 huruf alfabet)</h1>
+              <h1 class="display-4">Enkripsi</h1>
+              <!-- form text dan shift -->
+              <form action="/Hill-Cipher-standard" method="POST" enctype="multipart/form-data" name="inputfile" class="mb-2">
+                      <div class="mb-3">
+                        <label class="form-label">Text</label>
+                        <input name="text_enc" type="text" placeholder="Alphabet kapital" pattern="[a-zA-Z]*" oninput="this.value = this.value.toUpperCase();" class="form-control" required>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Key</label>
+                        <textarea class="form-control" pattern="[0-9\s]*" name="key_enc" placeholder="Key dalam matriks dipisahkan dengan sepasi" rows="3"></textarea>
+                      </div>
+                      <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+              <!-- hasil enkripsi -->
+              <div class="mb-5">
+                  <label class="col-form-label">Hasil Enkripsi</label>
+                  <input type="text" class="form-control" id="Energy" disabled value="{{content[0]}}">
+              </div>
+
+              <h1 class="display-4">Dekripsi</h1>
+              <!-- form text dan shift -->
+              <form action="/Hill-Cipher-standard" method="POST" enctype="multipart/form-data" name="inputfile" class="mb-2">
+                  <div class="mb-3">
+                    <label class="form-label">Text</label>
+                    <input name="text_dec" type="text" placeholder="Alphabet kapital" pattern="[a-zA-Z]*" oninput="this.value = this.value.toUpperCase()" class="form-control" required>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Key</label>
+                    <textarea class="form-control" pattern="[0-9\s]*" name="key_dec" placeholder="Key dalam matriks dipisahkan dengan sepasi" rows="3"></textarea>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+              <!-- hasil dekripsi -->
+              <div class="mb-3">
+                  <label class="col-form-label">Hasil Dekripsi</label>
+                  <input type="text" class="form-control" id="Entropy" disabled value="{{content[1]}}">
+              </div>
+          </div>
+      </div>
+  </div>
+{% endblock %}
