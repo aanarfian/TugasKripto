@@ -82,11 +82,16 @@ def vigenere_ext():
         key = request.form.get("key")
         is_encryption = request.args.get("type") == "enc"
 
+        bin_data = array.array("B", bytearray(data, "ASCII"))
+
         if is_encryption:
-            bin_data = array.array("B", bytearray(data, "ASCII"))
             output["type"] = "enc"
             output["result"] = VigenereExt.encrypt(bin_data, key)
-            output["as_str"] = ''.join([chr(i) for i in output["result"]])
+        else:
+            output["type"] = "dec"
+            output["result"] = VigenereExt.decrypt(bin_data, key)
+
+        output["as_str"] = ''.join([chr(i) for i in output["result"]])
 
     return render_template('vigenere_ext_cipher.html', output=json.dumps(output))
 
