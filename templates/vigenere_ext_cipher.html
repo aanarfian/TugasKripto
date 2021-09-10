@@ -17,36 +17,37 @@
         <h1 class="display-4 mb-4">Enkripsi</h1>
 
         <!-- form text dan shift -->
-        <form id="enc-form" action="/vigenere-ext-cipher?type=enc"
-            method="POST" class="mb-2">
+        <form class="input-form" action="/vigenere-ext-cipher?type=enc"
+            method="POST" data-op-type="enc" class="mb-2">
 
           <label class="form-label">Input</label>
-          <span id="enc-input-data-err" class="d-none text-danger">
+          <span class="input-data-err d-none text-danger" data-op-type="enc">
             &nbsp;<span></span>
           </span>
 
           <div class="mb-3 w-50">
-            <select id="enc-input-type" class="form-select mb-3">
+            <select class="input-type-select form-select mb-3" data-op-type="enc">
               <option value="text" selected>Teks</option>
               <option value="file">File</option>
             </select>
 
-            <div id="enc-input-box"></div>
+            <div class="input-box" data-op-type="enc"></div>
           </div>
 
           <div class="mb-3 w-50">
             <label class="form-label">Key</label>
-            <span id="enc-input-key-err" class="d-none text-danger">
+            <span class="input-key-err d-none text-danger" data-op-type="enc">
               &nbsp;<span></span>
             </span>
 
-            <input id="enc-input-key" class="form-control" name="key" type="text"
-                placeholder="e.g. SEBUAHKEY (tidak boleh ada karakter selain huruf alfabet)">
+            <input class="input-key form-control" name="key" type="text"
+                placeholder="e.g. SEBUAHKEY (tidak boleh ada karakter selain huruf alfabet)"
+                data-op-type="enc">
           </div>
 
-          <input type="hidden" id="enc-real-content" name="data">
+          <input type="hidden" class="input-real-data" name="data" data-op-type="enc">
 
-          <button type="submit" id="enc-input-submit" class="btn btn-primary">
+          <button type="submit" class="btn btn-primary">
             Submit
           </button>
         </form>
@@ -55,19 +56,11 @@
         <div class="mb-5 w-50">
           <label class="col-form-label">Hasil Enkripsi</label>
 
-          <div id="enc-output-box" class="d-none">
-            <p id="enc-output-text-result"><em></em></p>
-            <p id="enc-output-file-result"><a>Download file</a></p>
+          <div class="output-box d-none" data-op-type="enc">
+            <p class="output-text-result"><em></em></p>
+            <p class="output-file-result"><a>Download file</a></p>
           </div>
         </div>
-
-        <template id="enc-template-input-textarea">
-          <textarea class="enc-input-textarea form-control" placeholder="masukkan teks yang ingin dienkripsi"></textarea>
-        </template>
-
-        <template id="enc-template-input-file">
-          <input class="enc-input-file" type="file">
-        </template>
 
         <!--
           ====================================================================
@@ -122,6 +115,20 @@
           </div>
         </div>
 
+        <!--
+          ====================================================================
+                                      TEMPLATES
+          ====================================================================
+        -->
+
+        <template id="template-input-textarea">
+          <textarea class="input-textarea input-field form-control" placeholder="masukkan teks"></textarea>
+        </template>
+
+        <template id="template-input-file">
+          <input class="input-file input-field" type="file">
+        </template>
+
         <template id="dec-template-input-textarea">
           <textarea class="dec-input-textarea form-control" placeholder="masukkan teks yang ingin didekripsi"></textarea>
         </template>
@@ -149,8 +156,8 @@
       // dinamis dengan mudah.
       const TEMPLATES = {
         INPUT: {
-          TEXTAREA: document.querySelector("#enc-template-input-textarea").innerHTML,
-          FILE: document.querySelector("#enc-template-input-file").innerHTML,
+          TEXTAREA: document.querySelector("#template-input-textarea"),
+          FILE: document.querySelector("#template-input-file"),
         },
       };
 
@@ -158,21 +165,24 @@
        * Logika input.
        */
       (function () {
-        let input;
+        let input = {
+          enc: "",
+          dec: "",
+        };
 
         /**
          * Input handlers.
          */
         const inputHandlers = {
-          text: function (event) {
-            input = event.target.value;
+          text: function (event, opType) {
+            input[opType] = event.target.value;
           },
 
-          file: function (event) {
+          file: function (event, opType) {
             const reader = new FileReader();
 
             reader.addEventListener("load", function (event) {
-              input = event.target.result;
+              input[opType] = event.target.result;
             });
 
             reader.readAsText(event.target.files[0], "ASCII");
@@ -182,58 +192,65 @@
         /**
          * Handle perubahan tipe data input.
          */
-        document.querySelector("#enc-input-type")
-            .addEventListener("change", function () {
-              const inputType = document.querySelector("#enc-input-type").value;
+        document.querySelector(".input-type-select")
+            .addEventListener("change", function (event) {
+              const inputType = event.target.value;
+              const opType = event.target.dataset.opType;
+
               const newInputEl = inputType == "text"
                   ? TEMPLATES.INPUT.TEXTAREA
                   : TEMPLATES.INPUT.FILE;
 
-              document.querySelector("#enc-input-box").innerHTML = newInputEl;
-              input = "";
+              input[opType] = "";
+              document.querySelector(`.input-box[data-op-type="${opType}"]`)
+                  .innerHTML = newInputEl.innerHTML;
 
-              if (inputType === "file") {
-                document.querySelector(".enc-input-file")
-                    .addEventListener("change", inputHandlers.file);
-              } else {
-                document.querySelector(".enc-input-textarea")
-                    .addEventListener("change", inputHandlers.text);
-              }
+              document.querySelector(".input-box .input-field")
+                  .addEventListener("change", function (event) {
+                    if (inputType === "text") {
+                      inputHandlers.text(event, opType);
+                    } else {
+                      inputHandlers.file(event, opType);
+                    }
+                  });
             });
 
         /**
          * Validator untuk input-input.
          */
         const validators = {
-          validateInputData: function () {
-            if (!input) {
-              document.querySelector("#enc-input-data-err")
+          validateInputData: function (opType) {
+            if (!input[opType]) {
+              document.querySelector(`.input-data-err[data-op-type="${opType}"]`)
                   .classList.remove("d-none");
-              document.querySelector("#enc-input-data-err span")
+              document.querySelector(`.input-data-err[data-op-type="${opType}"] span`)
                   .innerHTML = "* data tidak valid";
 
               return false;
             }
 
-            document.querySelector("#enc-input-data-err")
+            document.querySelector(`.input-data-err[data-op-type="${opType}"]`)
                 .classList.add("d-none");
+
             return true;
           },
 
-          validateKey: function () {
-            const key = document.querySelector("#enc-input-key").value ?? "";
+          validateKey: function (opType) {
+            const key = document
+                .querySelector(`.input-key[data-op-type="${opType}"`).value ?? "";
 
             if (!key.match(/[A-Z]+/i)) {
-              document.querySelector("#enc-input-key-err")
+              document.querySelector(`.input-key-err[data-op-type="${opType}"`)
                   .classList.remove("d-none");
-              document.querySelector("#enc-input-key-err span")
+              document.querySelector(`.input-key-err[data-op-type="${opType}"] span`)
                   .innerHTML = "* key harus terdiri atas huruf alfabet";
 
               return false;
             }
 
-            document.querySelector("#enc-input-key-err")
+            document.querySelector(`.input-key-err[data-op-type="${opType}"]`)
                 .classList.add("d-none");
+
             return true;
           },
         };
@@ -241,21 +258,24 @@
         /**
          * Handle submit.
          */
-        document.querySelector("#enc-form")
+        document.querySelector(".input-form")
             .addEventListener("submit", function (event) {
-              const isValidInputData = validators.validateInputData();
-              const isValidKey = validators.validateKey();
+              const opType = event.target.dataset.opType;
+
+              const isValidInputData = validators.validateInputData(opType);
+              const isValidKey = validators.validateKey(opType);
 
               if (!isValidInputData || !isValidKey) {
                 event.preventDefault();
               }
 
-              document.querySelector("#enc-real-content").value = input;
+              document.querySelector(`.input-real-data[data-op-type="${opType}"]`)
+                  .value = input[opType];
             });
 
         // Trigger inisialisasi ketika page baru diload
         // pertama kali.
-        document.querySelector("#enc-input-type")
+        document.querySelector(".input-type-select")
             .dispatchEvent(new Event("change"));
       })();
 
@@ -273,27 +293,25 @@
           return;
         }
 
-        if (output.type === 'encryption') {
-          const bytestring = output.result
-            .map(b => `0x${b.toString(16)}`)
-            .join(" ");
+        const bytestring = output.result
+          .map(b => `0x${b.toString(16)}`)
+          .join(" ");
 
-          document.querySelector("#enc-output-box").classList
-              .remove("d-none");
+        document.querySelector(`.output-box[data-op-type="${output.type}"]`)
+            .classList.remove("d-none");
 
-          // tampilkan bytestring hasil enkripsi
-          document.querySelector("#enc-output-text-result em")
-              .innerHTML = bytestring;
+        // tampilkan bytestring hasil enkripsi
+        document
+            .querySelector(`.output-box[data-op-type="${output.type}"] .output-text-result em`)
+            .innerHTML = bytestring;
 
-          // file hasil enkripsi
-          document.querySelector("#enc-output-file-result a")
-              .setAttribute("download", "hasil-enkripsi.txt");
-          document.querySelector("#enc-output-file-result a")
-              .setAttribute("href", "data:text/plain;charset=utf-8,"
-                                    + encodeURIComponent(output.as_str));
-        } else {
-          // TODO
-        }
+        // file hasil enkripsi
+        const downloadAnchorTag = document
+            .querySelector(`.output-box[data-op-type="${output.type}"] .output-file-result a`)
+
+        downloadAnchorTag.setAttribute("download", "hasil-enkripsi.txt");
+        downloadAnchorTag.setAttribute("href", "data:text/plain;charset=utf-8,"
+                                  + encodeURIComponent(output.as_str));
       })();
     };
   </script>

@@ -84,7 +84,7 @@ def vigenere_ext():
 
         if is_encryption:
             bin_data = array.array("B", bytearray(data, "ASCII"))
-            output["type"] = "encryption"
+            output["type"] = "enc"
             output["result"] = VigenereExt.encrypt(bin_data, key)
             output["as_str"] = ''.join([chr(i) for i in output["result"]])
 
