@@ -1,8 +1,14 @@
+import array
+import json
+
 from flask import Flask, render_template, request, redirect
+
+import convertThings as con
 import encryption.shift as shift
 import encryption.substitution as substitution
-import convertThings as con
+
 from encryption.affine import Affine
+from encryption.vigenere_ext import VigenereExt
 
 
 app = Flask(__name__)
@@ -69,7 +75,20 @@ def affine():
 
 @app.route("/vigenere-ext-cipher", methods=['POST', 'GET'])
 def vigenere_ext():
-    return render_template('vigenere_ext_cipher.html')
+    output = {}
+
+    if request.method == "POST":
+        data = request.form.get("data")
+        key = request.form.get("key")
+        is_encryption = request.args.get("type") == "enc"
+
+        if is_encryption:
+            bin_data = array.array("B", bytearray(data, "ASCII"))
+            output["type"] = "encryption"
+            output["result"] = VigenereExt.encrypt(bin_data, key)
+            output["as_str"] = ''.join([chr(i) for i in output["result"]])
+
+    return render_template('vigenere_ext_cipher.html', output=json.dumps(output))
 
 
 if __name__ == "__name_-":
