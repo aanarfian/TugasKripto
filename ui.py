@@ -93,7 +93,7 @@ def vigenere_ext():
 
         output["as_str"] = ''.join([chr(i) for i in output["result"]])
 
-    return render_template('vigenere_ext_cipher.html', output=json.dumps(output))
+    return render_template('vigenere_ext_cipher.html', output=json.dumps(output), is_ext_vignere = True)
 
 
 if __name__ == "__name_-":
