@@ -1,21 +1,30 @@
+import array
+import json
+import math
+
 from flask import Flask, render_template, request, redirect
+
+from numpy.core.fromnumeric import reshape
+
+import convertThings as con
 import encryption.shift as shift
 import encryption.substitution as substitution
-import convertThings as con
+
 from encryption.affine import Affine
+from encryption.vigenere_ext import VigenereExt
 import encryption.playfair as pf
 import encryption.vigenere as vig
 import encryption.hill as hillcipher
-import math
-from numpy.core.fromnumeric import reshape
 
 
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
+
 @app.route("/", methods=['GET'])
 def home():
     return render_template("index.html", is_home= 'yes')
+
 
 @app.route("/Shift-Cipher-standard", methods=['POST', 'GET'])
 def shittChipher():
@@ -33,6 +42,7 @@ def shittChipher():
         return render_template("ShittCipherstandard.html", content=[enk_shitt, dek_shitt] , is_shift = 'yes')
     else:
         return render_template("ShittCipherstandard.html", content=[enk_shitt, dek_shitt], is_shift = 'yes')
+
 
 @app.route("/Subtitution-Cipher-standard", methods=['POST', 'GET'])
 def subsitution():
@@ -71,6 +81,30 @@ def affine():
     else:
         return render_template("affinechipherstandard.html", content=[enk_affine, dek_affine], is_affine = 'yes')
 
+
+@app.route("/vigenere-ext-cipher", methods=['POST', 'GET'])
+def vigenere_ext():
+    output = {}
+
+    if request.method == "POST":
+        data = request.form.get("data")
+        key = request.form.get("key")
+        is_encryption = request.args.get("type") == "enc"
+
+        bin_data = array.array("B", bytearray(data, "ASCII"))
+
+        if is_encryption:
+            output["type"] = "enc"
+            output["result"] = VigenereExt.encrypt(bin_data, key)
+        else:
+            output["type"] = "dec"
+            output["result"] = VigenereExt.decrypt(bin_data, key)
+
+        output["as_str"] = ''.join([chr(i) for i in output["result"]])
+
+    return render_template('vigenere_ext_cipher.html', output=json.dumps(output), is_ext_vignere = True)
+
+
 @app.route("/Playfair-Cipher-standard", methods=['POST', 'GET'])
 def playfair():
     enk_playfair = ""
@@ -87,6 +121,7 @@ def playfair():
         return render_template("Playfaircipherstandard.html", content=[enk_playfair, dek_playfair], is_playfair = 'yes')
     else:
         return render_template("Playfaircipherstandard.html", content=[enk_playfair, dek_playfair], is_playfair = 'yes')
+
 
 @app.route("/Vignere-Cipher-standard", methods=['POST', 'GET'])
 def vignere():
@@ -128,6 +163,7 @@ def hill():
         return render_template("Hillcipherstandard.html", content=[enk_hill, dek_hill], is_hill = 'yes')
     else:
         return render_template("Hillcipherstandard.html", content=[enk_hill, dek_hill], is_hill = 'yes')
+
 
 if __name__ == "__name_-":
     app.run()
